@@ -2,56 +2,42 @@
 
 import React from 'react'
 import Link from 'next/link'
-import NavLogo from './NavLogo'
 import { accountItemList, navItemList } from '@/constants'
-import { AiOutlineClose } from 'react-icons/ai'
-
-//redux
-import { useSelector, useDispatch } from 'react-redux'
-import { closeDropdown } from '@/redux/slices/navDropdownSlice'
-import { RootState } from '@/redux/store'
+import { AiOutlineUserSwitch } from 'react-icons/ai'
 
 const UserDropDown = () => {
-  const dispatch = useDispatch()
-  const dropDown = useSelector((state: RootState) => state.navDropdown.value)
-
   return (
-    <div
-      onClick={() => dispatch(closeDropdown())}
-      onMouseLeave={() => dispatch(closeDropdown())}
-      className={` absolute top-8 -right-2  w-48 h-auto  dark:bg-slate-900 bg-slate-300  p-3   rounded-md+ ${
-        ' ' + dropDown
-      }`}
-    >
-      <div className='flex item-center justify-between h-20 py-8   '>
-        <AiOutlineClose />
-        <NavLogo />
+    <div className='p-2 group relative '>
+      <div className='dropdown inline-block w-auto'>
+        <button className=' font-semibold py-2 px-4 rounded inline-flex items-center'>
+          <span className='flex  items-center justif-center text-2xl'>
+            <AiOutlineUserSwitch />
+          </span>
+        </button>
+        <div className='  dark:bg-slate-900  dark:text-slate-300 bg-slate-300  text-slate-800 pt-4 px-2  rounded-md   dropdown-menu  w-48 right-0 h-auto  absolute hidden group-hover:block '>
+          {accountItemList.map((item, i) => (
+            <Link
+              className='hover:text-slate-50 dark:border-slate-300 border-slate-900 flex items-center  justify-start h-8  border rounded-md p-2 mb-4 my-2'
+              key={i}
+              href={item.href}
+            >
+              <span className='flex items-center mr-2'>{item.icon} </span>
+              <p>{item.title} </p>
+            </Link>
+          ))}
+          <hr />
+          {navItemList.map((item, i) => (
+            <Link
+              className='hover:text-slate-50  flex items-center justify-start h-8 w-full  p-2 my-2'
+              key={i}
+              href={item.href}
+            >
+              <span className='flex items-center mr-2'>{item.icon} </span>
+              <p>{item.title} </p>
+            </Link>
+          ))}
+        </div>
       </div>
-      <ul className='flex flex-col items-start justify-start '>
-        {accountItemList.map((linkItem, i) => (
-          <Link
-            key={i}
-            href={linkItem.href}
-            className='border rounded-md  w-full my-1 p-2 gap-2 flex items-center justify-start'
-          >
-            <span className='flex items-center '>{linkItem.icon} </span>
-            <p className='items-center'>{linkItem.title}</p>
-          </Link>
-        ))}
-      </ul>
-
-      <ul className='flex flex-col items-start justify-start '>
-        {navItemList.map((linkItem, i) => (
-          <Link
-            key={i}
-            href={linkItem.href}
-            className='py-2 gap-2 flex items-center justify-start '
-          >
-            <span className='flex items-center '>{linkItem.icon} </span>
-            <p className='items-center'>{linkItem.title}</p>
-          </Link>
-        ))}
-      </ul>
     </div>
   )
 }
